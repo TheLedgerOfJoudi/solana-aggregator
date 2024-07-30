@@ -1,5 +1,5 @@
 use aggregator::aggregate_data;
-use error::{AggregatorError, DatabaseError, RuntimeError};
+use error::{AggregatorError, RuntimeError};
 use std::thread;
 mod aggregator;
 mod database;
@@ -18,12 +18,12 @@ mod tests;
 /// A `Result` indicating the success or failure of the operation. Returns `Ok(())` if
 /// both threads complete successfully, or a `RuntimeError` if an error occurs in either thread.
 fn main() -> Result<(), RuntimeError> {
-    let t1 = thread::spawn(|| restful_api::web_server());
-    let t2 = thread::spawn(|| run());
+    let t1 = thread::spawn(restful_api::web_server);
+    let t2 = thread::spawn(run);
     if t1.join().unwrap().is_err() {
         return Err(RuntimeError::WebServerError);
-    } else if let Err(err) = t2.join().unwrap() {
-        return Err(RuntimeError::AggregatorError(err));
+    } else if let Err(_err) = t2.join().unwrap() {
+        return Err(RuntimeError::AggregatorError);
     };
     Ok(())
 }

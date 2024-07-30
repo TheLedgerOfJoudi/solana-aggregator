@@ -24,4 +24,3 @@ fn test_get_timestamp() {
     let timestamp = 1722201110;
     assert_eq!("2024-07-28 21:11:50", aggregator::get_timestamp(timestamp));
 }
-

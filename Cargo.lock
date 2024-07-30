@@ -3257,6 +3257,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "solana-aggregator"
+version = "0.1.0"
+dependencies = [
+ "actix-web",
+ "chrono",
+ "envy",
+ "futures-util",
+ "rusqlite",
+ "serde",
+ "serde_json",
+ "solana-client",
+ "solana-sdk",
+ "solana-transaction-status",
+ "tokio",
+ "url",
+]
+
+[[package]]
 name = "solana-clap-utils"
 version = "2.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3780,24 +3798,6 @@ dependencies = [
  "thiserror",
  "tokio",
  "x509-parser",
-]
-
-[[package]]
-name = "solana-test"
-version = "0.1.0"
-dependencies = [
- "actix-web",
- "chrono",
- "envy",
- "futures-util",
- "rusqlite",
- "serde",
- "serde_json",
- "solana-client",
- "solana-sdk",
- "solana-transaction-status",
- "tokio",
- "url",
 ]
 
 [[package]]

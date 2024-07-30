@@ -1,9 +1,10 @@
 #[derive(Debug)]
 pub enum RuntimeError {
-    AggregatorError(AggregatorError),
+    AggregatorError,
     WebServerError,
 }
 
+#[allow(clippy::enum_variant_names)]
 #[derive(Debug, PartialEq)]
 pub enum AggregatorError {
     BlockFetchError,
@@ -19,6 +20,5 @@ pub enum AggregatorError {
 #[derive(Debug)]
 pub enum DatabaseError {
     ConnectError,
-    InitTableError,
     InsertionError,
 }

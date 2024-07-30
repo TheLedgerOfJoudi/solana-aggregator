@@ -1,6 +1,5 @@
-use crate::DatabaseError;
+use crate::error::DatabaseError;
 use solana_sdk::pubkey::Pubkey;
-use std::thread;
 
 use rusqlite::{Connection, Result};
 
@@ -39,16 +38,12 @@ impl Database {
     ///
     /// Returns `DatabaseError::ConnectError` if the connection to the database fails.
     /// Returns `DatabaseError::InitTableError` if the table creation fails.
-   pub fn init_database() -> Result<Connection, DatabaseError> {
-        let client = match thread::spawn(|| {
-            let client = match Connection::open("transactions.db") {
-                Ok(res) => res,
-                Err(_) => return Err(DatabaseError::ConnectError),
-            };
+    pub fn init_database() -> Result<Connection, DatabaseError> {
+        let database_client = Connection::open("transactions.db").unwrap();
 
-            if client
-                .execute(
-                    "
+        database_client
+            .execute(
+                "
                 CREATE TABLE IF NOT EXISTS transactions (
                     sender              text,
                     receiver            text,
@@ -57,22 +52,10 @@ impl Database {
                     signature           text
                     )
             ",
-                    [],
-                )
-                .is_err()
-            {
-                return Err(DatabaseError::InitTableError);
-            };
-
-            Ok(client)
-        })
-        .join()
-        .unwrap()
-        {
-            Ok(res) => res,
-            Err(err) => return Err(err),
-        };
-        Ok(client)
+                [],
+            )
+            .unwrap();
+        Ok(database_client)
     }
 
     /// Inserts a new transaction record into the database.
@@ -153,5 +136,11 @@ impl Database {
             query_response.push(result);
         }
         query_response
+    }
+}
+
+impl Default for Database {
+    fn default() -> Self {
+        Self::new()
     }
 }

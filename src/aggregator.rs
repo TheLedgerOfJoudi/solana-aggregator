@@ -33,7 +33,6 @@ struct Transaction {
 }
 
 impl Transaction {
-
     /// Creates a new, empty `Transaction`.
     fn new() -> Transaction {
         Transaction {
@@ -218,7 +217,7 @@ fn handle_block(
     let time_stamp = get_timestamp(block_time);
     for encoded_transaction in transactions.iter() {
         let mut transaction = Transaction::new();
-        transaction.timestamp = time_stamp.clone();
+        transaction.timestamp.clone_from(&time_stamp);
         match transaction.handle_transaction(encoded_transaction) {
             Ok(_) => transaction.insert_to_database(database),
             Err(_) => return Err(AggregatorError::TransactionParseError),
